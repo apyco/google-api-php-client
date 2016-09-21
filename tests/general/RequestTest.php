@@ -81,6 +81,7 @@ class RequestTest extends BaseTest
       $batch->add($this->plus->people->get('+LarryPage'), 'key1');
       $batch->add($this->plus->people->get('+LarryPage'), 'key2');
       $batch->add($this->plus->people->get('+LarryPage'), 'key3');
+      var_dump( $batch->toBatchString("test") );
       $result = $batch->execute();
       $this->assertTrue(isset($result['response-key1']));
       $this->assertTrue(isset($result['response-key2']));
