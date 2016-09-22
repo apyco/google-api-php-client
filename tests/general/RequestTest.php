@@ -74,19 +74,26 @@ class RequestTest extends BaseTest
       $argSeparatorOutput = ini_get('arg_separator.output');
       ini_set('arg_separator.output', '&amp;');
       // do test 
-    $url = 'http://localhost:8080/foo/bar?foo=a&foo=b&wowee=oh+my';
+      $url  = 'http://localhost:8080/foo/bar?foo=a&foo=b&wowee=oh+my';
       $url2 = 'http://localhost:8080/foo/bar?foo=a&foo=b&wowee=oh+my&hi=there';
       $request = new Google_Http_Request($url);
       $request->setExpectedClass("Google_Client");
-      $this->assertEquals(2, count($request->getQueryParams()));
+      $this->assertEquals(2, count( $request->getQueryParams()));
       $request->setQueryParam("hi", "there");
+      $this->assertEquals(3, count( $request->getQueryParams()));
       $this->assertEquals($url2, $request->getUrl());
       $this->assertEquals("Google_Client", $request->getExpectedClass());
-      var_dump( $request->toBatchString("test") );
-      $result = $batch->execute();
-      $this->assertTrue(isset($result['response-key1']));
-      $this->assertTrue(isset($result['response-key2']));
-      $this->assertTrue(isset($result['response-key3']));
+      $this->assertContains($request->getUrl(), $request->toBatchString("test"), '', true);
       ini_set('arg_separator.output', $argSeparatorOutput);
+      $url  = 'http://localhost:8080/foo/bar?foo=a&foo=b&wowee=oh+my';
+      $url2 = 'http://localhost:8080/foo/bar?foo=a&foo=b&wowee=oh+my&hi=there';
+      $request = new Google_Http_Request($url);
+      $request->setExpectedClass("Google_Client");
+      $this->assertEquals(2, count( $request->getQueryParams()));
+      $request->setQueryParam("hi", "there");
+      $this->assertEquals(3, count( $request->getQueryParams()));
+      $this->assertEquals($url2, $request->getUrl());
+      $this->assertEquals("Google_Client", $request->getExpectedClass());
+      $this->assertContains($request->getUrl(), $request->toBatchString("test"), '', true);
   } 
 }
